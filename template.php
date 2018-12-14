@@ -273,14 +273,7 @@ function uwf_menu_local_tasks(&$variables) {
 }
 
 function uwf_preprocess_region(&$variables) {
-	if (in_array($variables['region'],array(
-				'highlighted',
-				'prefooter1',
-				'prefooter2',
-				'footer'
-			))) {
-		$variables['classes_array'][] = 'row';
-	}
+
 }
 
 /**
