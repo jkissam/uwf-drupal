@@ -1,0 +1,7 @@
+@import "compass/css3";
+@import "variables";
+
+#navigation ul.menu li { margin: 0; }
+#navigation ul li.leaf { list-style: none outside none; }
+
+.node-unpublished { padding: 10px; }
