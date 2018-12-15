@@ -23,6 +23,15 @@ html, body { height: 100%; }
 .messages { border: 1px solid $light-gray; @include border-radius(5px); padding: 10px; margin-bottom: 1.3334em; }
 .messages .dismiss { float: right; font-size: 2em; margin-left: 1em; }
 
+.share-links { max-width: 400px; }
+.share-links ul { list-style: none outside none; margin: 0 -5px 1em; padding: 0; }
+.share-links ul:after { content: ''; display: table; clear: both; }
+.share-links ul li { width: 33.33%; float: left; padding: 0 5px; }
+.share-links ul li a { display: block; background: $base-text; color: #fff; padding: 5px 10px; text-align: center; font-weight: bold; }
+.share-links ul li.btn-facebook a { background: $facebook-blue; }
+.share-links ul li.btn-twitter a { background: $twitter-aqua; }
+.no-touch .share-links ul li a:hover { background: $medium-gray; color: #fff; }
+
 // footers
 
 #footer-wrapper.fixed { position: fixed; left: 0; right: 0; bottom: 0; }

@@ -32,7 +32,7 @@
     ?>
   </div>
 
-  <?php if ($page && 0): ?>
+  <?php if ($page): ?>
 	  <div class="share-links">
 		<h3><?php print(t('Share this page').':'); ?></h3>
         <ul class="btn-share btn-social">

@@ -28,11 +28,11 @@ function uwf_preprocess_html(&$variables) {
   $settings = array(
     'pathToTheme' => drupal_get_path('theme', variable_get('theme_default', NULL)),
     'themeOptions' => array(
-      'validateForms' => theme_get_setting('uwf_validate_forms'),
-      'fixFooter' => theme_get_setting('uwf_fix_footer'),
-      'shortenLinks' => theme_get_setting('uwf_shorten_links'),
+      'validateForms' => theme_get_setting('uwf_validate_forms') ? true : false,
+      'fixFooter' => theme_get_setting('uwf_fix_footer') ? true : false,
+      'shortenLinks' => theme_get_setting('uwf_shorten_links') ? true : false,
       'shortenLinksSelector' => theme_get_setting('uwf_shorten_links_selector'),
-      'externalLinks' => theme_get_setting('uwf_external_links'),
+      'externalLinks' => theme_get_setting('uwf_external_links') ? true : false,
       'externalLinksExceptions' => theme_get_setting('uwf_external_links_exceptions'),
       'sectionNavigationSelector' => theme_get_setting('uwf_section_navigation_selector'),
       'sectionNavigationPadding' => theme_get_setting('uwf_section_navigation_padding'),
@@ -50,10 +50,10 @@ function uwf_preprocess_html(&$variables) {
 	  'dismissModal' => t('Dismiss modal'),
       'opensNewWindow' => t('Opens in a new window'),
       'backToTop' => t('Back to top'),
-      'link' => t('link'),
+      'link' => '('.t('link').')',
     ),
   );
-  drupal_add_js('jQuery.extend(Drupal.settings, '.json_encode((object) $settings).');', 'inline');
+  drupal_add_js('jQuery.extend(Drupal.settings,'.json_encode((object) $settings).'); uwfOptions=Drupal.settings.themeOptions; uwfText=Drupal.settings.themeTranslations', 'inline');
 
   $q = isset($_GET['q']) ? $_GET['q'] : 'front';
   $page_id = str_replace('/','-',$q);
