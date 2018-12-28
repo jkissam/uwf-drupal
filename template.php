@@ -30,6 +30,10 @@ function uwf_preprocess_html(&$variables) {
     'themeOptions' => array(
       'validateForms' => theme_get_setting('uwf_validate_forms') ? true : false,
       'fixFooter' => theme_get_setting('uwf_fix_footer') ? true : false,
+      'fixSecondary' => theme_get_setting('uwf_fix_secondary') ? true : false,
+      'fixSecondaryTop' => intval(theme_get_setting('uwf_fix_secondary_top')),
+      'fixSecondaryMax' => intval(theme_get_setting('uwf_fix_secondary_max')),
+      'fixSecondaryBreakPoint' => intval(theme_get_setting('uwf_fix_secondary_break_point')),
       'shortenLinks' => theme_get_setting('uwf_shorten_links') ? true : false,
       'shortenLinksSelector' => theme_get_setting('uwf_shorten_links_selector'),
       'externalLinks' => theme_get_setting('uwf_external_links') ? true : false,
@@ -40,7 +44,8 @@ function uwf_preprocess_html(&$variables) {
       'mobileMenuDirection' => theme_get_setting('uwf_navigation_mobile_menu_direction'),
       'onThisPageHeading' => theme_get_setting('uwf_on_this_page') ? theme_get_setting('uwf_on_this_page_heading') : '',
       'onThisPageNav' => theme_get_setting('uwf_on_this_page') ? theme_get_setting('uwf_on_this_page_nav') : '',
-      'onThisPageMinimumSections' => theme_get_setting('uwf_on_this_page') ? theme_get_setting('uwf_on_this_page_minimum_sections') : 2,
+      'onThisPageMinimumSections' => theme_get_setting('uwf_on_this_page') ? intval(theme_get_setting('uwf_on_this_page_minimum_sections')) : 2,
+      'onThisPageContent' => theme_get_setting('uwf_on_this_page') ? theme_get_setting('uwf_on_this_page_content') : '',
     ),
     'themeTranslations' => array(
       'dismissMenu' => t('Dismiss menu'),

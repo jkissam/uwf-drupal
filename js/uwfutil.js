@@ -35,6 +35,10 @@
  *   2.3.6 equalizeHeight
  *   2.3.7 scrollToInclude
  *   2.3.8 verticalCenter
+ *   2.3.9 fixOnMaxScroll
+ *     2.3.9.1 fixOnMaxScrollGetData
+ *     2.3.9.2 fixOnMaxScrollPosition
+ *   2.3.10 registerGAevent
  * 3. jQuery triggers
  *  3.1 jQuery(document).ready
  *  3.2 jQuery(window).load
@@ -137,6 +141,16 @@ uwfUtil = {
 		if (uwfOptions.fixFooter) {
 			uwfUtil.fixFooter();
 		}
+        
+        // fix secondary
+        if (uwfOptions.fixSecondary) {
+            uwfUtil.fixOnMaxScroll(
+                '#secondary',
+                uwfOptions.fixSecondaryMax,
+                uwfOptions.fixSecondaryBreakPoint,
+                uwfOptions.fixSecondaryTop
+            );
+        }
 
 		// shorten links
 		if (uwfOptions.shortenLinks) {
@@ -443,7 +457,7 @@ uwfUtil = {
 			if (index) { jQuery(this).before(sectionNavigationTopLink); }
 		});
 		jQuery(contentSelector).append(sectionNavigationTopLink);
-        
+        jQuery(window).trigger('resize');
         
         jQuery('.on-this-page-mobile .on-this-page-links').prepend('<li class="dismiss menu-dismiss" title="Dismiss menu"></li>');
         jQuery('.on-this-page-mobile .on-this-page-mobile-trigger').click(function(){
@@ -610,6 +624,7 @@ uwfUtil = {
 		}
 	},
 
+    // 2.3.8
 	// vertically center the element relative to another element
 	// both may be jQuery objects or jQuery selectors
 	verticalCenter : function(sel, relativeTo) {
@@ -619,6 +634,118 @@ uwfUtil = {
 		var newTop = ( $relativeTo.height() - $el.outerHeight() ) / 2;
 		if (newTop >= 0) { $el.css('top',newTop+'px'); }
 	},
+    
+    // 2.3.9 fixOnMaxScroll
+    // fix an element identified by the jQuery selector "sel"
+    // so that it will not scroll off the page entirely (but will scroll
+    // if its height is greater than the window height).
+    // "maxScroll" controls the maximum amount at the bottom
+    //   (increase this to leave space for a footer).
+    // "breakPoint" - Only implemented when window width is greater than this number
+    //   (defaults to 768, assuming we don't want this behavior on "xs" devices)
+    // "maxTop" controls maximum amount at the top
+    //   (increase this to leave space for a fixed header/navigation)
+    fixOnMaxScroll : function (sel, maxScroll, breakPoint, maxTop) {
+        if (typeof maxScroll !== "number") { maxScroll = 20; }
+        if (typeof breakPoint !== "number") { breakPoint = 768; }
+        if (typeof maxTop !== "number") { maxTop = 20; }
+        jQuery(sel).wrapInner('<div class="fixOnMaxScrollContainer"/>');
+        uwfUtil.fixOnMaxScrollGetData(sel, maxScroll);
+        jQuery(window).scroll(function(){
+            uwfUtil.fixOnMaxScrollPosition( sel, maxScroll, breakPoint, maxTop);
+        });
+    
+        // we also need to run both subscripts whenever window:
+        // 1. finishes loading (image loading can affect height of both window & element)
+        // 2. loads content via ajax (same)
+        // 3. resizes
+        jQuery(window).load(function(){
+            uwfUtil.fixOnMaxScrollGetData(sel, maxScroll);
+            uwfUtil.fixOnMaxScrollPosition( sel, maxScroll, breakPoint, maxTop);
+        });
+        jQuery(document).ajaxComplete(function() {
+            uwfUtil.fixOnMaxScrollGetData(sel, maxScroll);
+            uwfUtil.fixOnMaxScrollPosition( sel, maxScroll, breakPoint, maxTop);
+        });
+        jQuery(window).smartresize(function(){
+            uwfUtil.fixOnMaxScrollGetData(sel, maxScroll);
+            uwfUtil.fixOnMaxScrollPosition( sel, maxScroll, breakPoint, maxTop);
+        });
+    },
+    
+    // 2.3.9.1 helper function to get absolute coordinates of "naturally" positioned element
+    fixOnMaxScrollGetData : function ( sel, maxScroll ) {
+        sel += ' .fixOnMaxScrollContainer';
+        jQuery(sel).removeClass('fixed').css({
+            top : 'auto',
+            left : 'auto',
+            bottom : 'auto',
+            width : 'auto',
+            position : 'relative',
+        });
+        var coordsData = jQuery(sel).offset();
+        coordsData.width = jQuery(sel).outerWidth();
+        coordsData.height = jQuery(sel).outerHeight();
+        coordsData.fixPermanently = ( coordsData.top + coordsData.height + maxScroll ) < jQuery(window).height();
+        coordsData.doNotFix = jQuery(sel).height() > jQuery('#primary').height();
+        jQuery(sel).data(coordsData);
+    },
+
+    // 2.3.9.2 helper function to position element based on current situation
+    fixOnMaxScrollPosition : function( sel, maxScroll, breakPoint, maxTop ) {
+        sel += ' .fixOnMaxScrollContainer';
+        var pos = jQuery(window).scrollTop();
+        var coords = jQuery(sel).data();
+        var maxScrollPos = coords.top + coords.height + maxScroll + parseInt(jQuery('#site-wrapper').css('padding-top')) - jQuery(window).height();
+        if ( (jQuery(window).width() < breakPoint) || coords.doNotFix ) {
+            jQuery(sel).removeClass('fixed').css({
+                top : 'auto',
+                left : 'auto',
+                bottom : 'auto',
+                position : 'relative',
+            });
+        } else if (coords.fixPermanently) {
+            var top = coords.top - pos;
+            if (top < maxTop) { top = maxTop; }
+            jQuery(sel).addClass('fixed').css({
+                top : top,
+                left : coords.left,
+                bottom : 'auto',
+                width : coords.width,
+                position : 'fixed',
+            });
+        } else if (pos > maxScrollPos) {
+            jQuery(sel).addClass('fixed').css({
+                top : 'auto',
+                left : coords.left,
+                bottom : maxScroll,
+                width : coords.width,
+                position : 'fixed',
+            });
+        } else {
+            jQuery(sel).removeClass('fixed').css({
+                top : 'auto',
+                left : 'auto',
+                bottom : 'auto',
+                position : 'relative',
+            });
+        }
+    },
+    
+    // 2.3.10
+    // wrapper function for registering a Google Analytics event
+    // first tests to see if "ga" exists as a function
+    // (helpful in situations where ga is only registered in certain situations: 
+    //  anonymous users, etc.)
+    registerGAevent : function ( category, action, label ) {
+		if (typeof ga == 'function') {
+			ga('send', 'event', {
+				eventCategory : category,
+				eventAction : action,
+				eventLabel : label
+			});
+		}
+	}
 
 }
 
@@ -669,6 +796,10 @@ if (typeof uwfOptions == 'undefined') {
 	uwfOptions = {
 		validateForms : true,
 		fixFooter : true,
+        fixSecondary : true,
+        fixSecondaryMax : 20,
+        fixSecondaryBreakPoint : 768,
+        fixSecondaryTop : 20,
 		shortenLinks : true,
 		shortenLinksSelector : 'a',
 		externalLinks : true,

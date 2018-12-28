@@ -112,6 +112,51 @@ function uwf_form_system_theme_settings_alter(&$form, $form_state) {
     '#cols' => 60,
     '#rows' => 7,
   );
+    
+  $form['uwf_positioning'] = array
+  (
+	'#type' => 'fieldset',
+	'#title' => 'Positioning',
+	'#collapsible' => true,
+	'#collapsed' => true,
+  );
+  $form['uwf_positioning']['uwf_fix_footer'] = array(
+	'#type' => 'radios',
+	'#title' => t('Fix footer to bottom of the window if page content is shorter than window height?'),
+	'#default_value' => theme_get_setting('uwf_fix_footer'),
+	'#options' => array(
+		1 => 'Yes',
+		0 => 'No',
+	),
+  );
+  $form['uwf_positioning']['uwf_fix_secondary'] = array(
+	'#type' => 'radios',
+	'#title' => t('Fix first sidebar?'),
+    '#description' => t('Sidebar will be "fixed" so that it will not scroll off the page entirely (but will scroll if its height is greater than the window height).'),
+	'#default_value' => theme_get_setting('uwf_fix_secondary'),
+	'#options' => array(
+		1 => 'Yes',
+		0 => 'No',
+	),
+  );
+  $form['uwf_positioning']['uwf_fix_secondary_top'] = array(
+	'#type' => 'textfield',
+	'#title' => t('Maximum amount at the top'),
+    '#description' => t('Increase this to leave space for a fixed header/navigation.'),
+	'#default_value' => theme_get_setting('uwf_fix_secondary_top'),
+  );
+  $form['uwf_positioning']['uwf_fix_secondary_max'] = array(
+	'#type' => 'textfield',
+	'#title' => t('Maximum amount at the bottom'),
+    '#description' => t('Increase this to leave space for a footer.'),
+	'#default_value' => theme_get_setting('uwf_fix_secondary_max'),
+  );
+  $form['uwf_positioning']['uwf_fix_secondary_break_point'] = array(
+	'#type' => 'textfield',
+	'#title' => t('Break point for implementation'),
+    '#description' => t('Only implemented when window width is greater than this number.'),
+	'#default_value' => theme_get_setting('uwf_fix_secondary_break_point'),
+  );
 
   $form['uwf_js'] = array
   (
@@ -124,15 +169,6 @@ function uwf_form_system_theme_settings_alter(&$form, $form_state) {
 	'#type' => 'radios',
 	'#title' => t('Validate all forms using jquery validate?'),
 	'#default_value' => theme_get_setting('uwf_validate_forms'),
-	'#options' => array(
-		1 => 'Yes',
-		0 => 'No',
-	),
-  );
-  $form['uwf_js']['uwf_fix_footer'] = array(
-	'#type' => 'radios',
-	'#title' => t('Fix footer to bottom of the window if page content is shorter than window height?'),
-	'#default_value' => theme_get_setting('uwf_fix_footer'),
 	'#options' => array(
 		1 => 'Yes',
 		0 => 'No',
@@ -192,6 +228,11 @@ function uwf_form_system_theme_settings_alter(&$form, $form_state) {
         '#type' => 'textfield',
         '#title' => t('Minimum number of sections that must be on the page to generate a menu'),
         '#default_value' => theme_get_setting('uwf_on_this_page_minimum_sections'),
+    );
+    $form['uwf_otp']['uwf_on_this_page_content'] = array(
+        '#type' => 'textfield',
+        '#title' => t('jQuery selector for element containing the main page content to index'),
+        '#default_value' => theme_get_setting('uwf_on_this_page_content'),
     );
 
 
