@@ -10,6 +10,10 @@ Beta version 3
 * Make sure it works with admin menu
 * Write up documentation
 
+## January 3, 2018 - Beta version 4
+
+* Fixed email share variable reference in `uwf_preprocess_node` and undefined variable notices in `uwf_preprocess_block`
+
 ## December 28, 2018 - Beta version 3
 
 * Incorporates [Unwritten Future version 1.2](https://github.com/jkissam/unwritten_future#version-12)

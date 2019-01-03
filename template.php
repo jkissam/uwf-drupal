@@ -318,11 +318,11 @@ function uwf_preprocess_node(&$variables) {
       )
   );
   $variables['email_share_url'] = uwf_share_url(
-      $node_url,
-      $title,
+      $variables['node_url'],
+      $variables['title'],
       'email',
       array(
-          'email_subject' => t('I think you\'ll enjoy this: ').$title,
+          'email_subject' => t('I think you\'ll enjoy this: ').$variables['title'],
           'email_body' => t('I found it here:')
       )
   );
@@ -346,6 +346,8 @@ function uwf_preprocess_block(&$variables) {
 	$block_region = $variables['block']->region;
 	
 	// add wrappers for blocks in highlighted, scrolling regions
+    $variables['block_wrapper'] = '';
+    $variables['block_inner'] = '';
 	if ( ($block_region == 'highlighted') || ($block_region == 'scrolling') ) {
 		$variables['block_wrapper'] = '<div id="'.$variables['block_html_id'].'-wrapper" class="section-wrapper">';
 		$variables['block_inner'] = '<div id="'.$variables['block_html_id'].'-inner" class="section-inner">';
