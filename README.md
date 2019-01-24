@@ -2,7 +2,7 @@
 
 Drupal base theme based on the [Unwritten Future HTML5 Framework](https://github.com/jkissam/unwritten_future)
 
-Beta version 3
+Beta version 5
 
 ## Roadmap
 
@@ -10,7 +10,11 @@ Beta version 3
 * Make sure it works with admin menu
 * Write up documentation
 
-## January 3, 2018 - Beta version 4
+## January 24, 2019 - Beta version 5
+
+* Updated with latest version of Unwritten Future Theme (1.2.2), which changes mobile menu behavior and fixes a small bug in implementation of `uwfOptions.fixSecondary`
+
+## January 3, 2019 - Beta version 4
 
 * Fixed email share variable reference in `uwf_preprocess_node` and undefined variable notices in `uwf_preprocess_block`
 

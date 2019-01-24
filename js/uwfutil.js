@@ -143,7 +143,7 @@ uwfUtil = {
 		}
         
         // fix secondary
-        if (uwfOptions.fixSecondary) {
+        if (uwfOptions.fixSecondary && jQuery('#secondary').length) {
             uwfUtil.fixOnMaxScroll(
                 '#secondary',
                 uwfOptions.fixSecondaryMax,
@@ -206,9 +206,15 @@ uwfUtil = {
 			jQuery(this).siblings('.menu-toggle').click();
 		});
 		jQuery('.navigation-header').click(function(){
-			jQuery(this).siblings('.main-menu').children('ul').toggleClass('open');
+            var $mainMenu = jQuery(this).siblings('.main-menu').children('ul');
+            if ($mainMenu.hasClass('open')) { $mainMenu.find('ul').removeClass('open').siblings('.menu-toggle').removeClass('open').addClass('closed').attr('title',uwfText.openSubmenu); }
+			$mainMenu.toggleClass('open');
 		});
-		jQuery('.menu-dismiss').click(function(){ jQuery(this).parent('.main-menu ul').toggleClass('open'); });
+		jQuery('.menu-dismiss').click(function(){
+            var $mainMenu = jQuery(this).parent('.main-menu ul');
+            if ($mainMenu.hasClass('open')) { $mainMenu.find('ul').removeClass('open').siblings('.menu-toggle').removeClass('open').addClass('closed').attr('title',uwfText.openSubmenu); }
+			$mainMenu.toggleClass('open');
+        });
 
 		if (jQuery('#navigation .main-menu > ul').length) {
 			var menuHammer = new Hammer(jQuery('#navigation .main-menu > ul')[0]);

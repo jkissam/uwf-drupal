@@ -1,7 +1,7 @@
 name = Unwritten Future Base Theme
 description = Drupal base theme based on Unwritten Future HTML5 framework
 package = Core
-version = 1.0-beta4
+version = 1.0-beta5
 core = 7.x
 engine = phptemplate
 stylesheets[screen, projection][] = css/reset.css
