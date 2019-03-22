@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js" lang="<?php print $language->language; ?>" dir="<?php print $language->dir; ?>" xmlns:og="http://opengraphprotocol.org/schema/"> <!--<![endif]-->
+<html class="no-js" lang="<?php print $language->language; ?>" dir="<?php print $language->dir; ?>" xmlns:og="http://opengraphprotocol.org/schema/">
 
 <head>
   <!-- add google webfonts here -->

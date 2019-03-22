@@ -10,9 +10,17 @@ Beta version 5
 * Make sure it works with admin menu
 * Write up documentation
 
+## March 22, 2019 - Beta version 7
+
+* Removed thevariables `$page_id` and `$content_classes` from `maintenance-page.tpl.php`
+
+## February 2, 2019 - Beta version 6
+
+* Updated `maintenance-page.tpl.php` to reflect structure of Unwritten Future Framework rather than (oops) an older Drupal base theme. Also removed some extraneous comments from `html.tpl.php`
+
 ## January 24, 2019 - Beta version 5
 
-* Updated with latest version of Unwritten Future Theme (1.2.2), which changes mobile menu behavior and fixes a small bug in implementation of `uwfOptions.fixSecondary`
+* Updated with latest version of Unwritten Future Framework (1.2.2), which changes mobile menu behavior and fixes a small bug in implementation of `uwfOptions.fixSecondary`
 
 ## January 3, 2019 - Beta version 4
 
